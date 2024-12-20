@@ -1,0 +1,30 @@
+[
+    {
+      "id": 1,
+      "title": "To Kill a Mockingbird",
+      "author": "Harper Lee",
+      "year": 1960,
+      "genre": "Fiction",
+      "status": "Read",
+      "rating": 5
+    },
+    {
+      "id": 2,
+      "title": "1984",
+      "author": "George Orwell",
+      "year": 1949,
+      "genre": "Dystopian",
+      "status": "Reading",
+      "rating": 5
+    },
+    {
+        "id": 3,
+        "title": "BUku",
+        "author": "Offside",
+        "year": 2000,
+        "genre": "genre",
+        "status": "reading",
+        "rating": 4
+      }
+  ]
+  
