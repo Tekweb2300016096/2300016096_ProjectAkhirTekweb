@@ -1,18 +1,20 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
-const AddBook = ({ addBook, darkMode }) => {
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
-  const [genres, setGenres] = useState([]); // Multi-genre sebagai array
-  const [year, setYear] = useState("");
-  const [pages, setPages] = useState("");
-  const [review, setReview] = useState("");
-  const [image, setImage] = useState("");
-
+const EditBook = ({ books, updateBook, darkMode }) => {
+  const { id } = useParams();
   const navigate = useNavigate();
 
-  // Daftar genre yang tersedia
+  const bookToEdit = books.find((book) => book.id === parseInt(id)) || {};
+
+  const [title, setTitle] = useState(bookToEdit.title || "");
+  const [author, setAuthor] = useState(bookToEdit.author || "");
+  const [genres, setGenres] = useState(bookToEdit.genres || []); // Multi-genre sebagai array
+  const [year, setYear] = useState(bookToEdit.year || "");
+  const [pages, setPages] = useState(bookToEdit.pages || "");
+  const [review, setReview] = useState(bookToEdit.review || "");
+  const [image, setImage] = useState(bookToEdit.image || "");
+
   const allGenres = ["Action", "Fantasy", "Adventure", "Drama", "Romance", "Horror", "Comedy", "Magic", "Seinen", "Scholl Life", "Sport", "Martial Arts", "Dark"];
 
   const handleGenreChange = (genre) => {
@@ -25,20 +27,22 @@ const AddBook = ({ addBook, darkMode }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (title && author && genres.length > 0 && year && pages && review && image) {
-      addBook({
-        title,
-        author,
-        genres: genres.map((g) => g.trim().toLowerCase()), // Normalisasi genre
-        year,
-        pages,
-        review,
-        image,
-      });
-      navigate("/");
-    } else {
-      alert("Semua field harus diisi, dan minimal satu genre harus dipilih!");
+    if (!bookToEdit.id) {
+      alert("Buku tidak ditemukan!");
+      return;
     }
+    const updatedBook = {
+      ...bookToEdit,
+      title,
+      author,
+      genres: genres.map((g) => g.trim().toLowerCase()), // Normalisasi genre
+      year,
+      pages,
+      review,
+      image,
+    };
+    updateBook(updatedBook);
+    navigate("/");
   };
 
   return (
@@ -47,7 +51,7 @@ const AddBook = ({ addBook, darkMode }) => {
         darkMode ? "bg-gray-800 text-white" : "bg-white text-black"
       }`}
     >
-      <h1 className="text-3xl font-bold text-center mb-4">Tambah Buku Baru</h1>
+      <h1 className="text-3xl font-bold text-center mb-4">Edit Buku</h1>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label className="block text-lg font-medium">Judul Buku</label>
@@ -130,11 +134,11 @@ const AddBook = ({ addBook, darkMode }) => {
           type="submit"
           className="w-full bg-orange-500 text-white p-3 rounded-md hover:bg-orange-600"
         >
-          Tambah Buku
+          Simpan Perubahan
         </button>
       </form>
     </div>
   );
 };
 
-export default AddBook;
+export default EditBook;
